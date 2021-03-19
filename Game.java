@@ -1,3 +1,4 @@
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -11,14 +12,15 @@
  *  rooms, creates the parser and starts the game.  It also evaluates and
  *  executes the commands that the parser returns.
  * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author  Michael Kölling and David J. Barnes. Modified by Christopher Urban
+ * @version 2021.03.18
  */
 
 public class Game 
 {
     private Parser parser;
     private Room currentRoom;
+    private Item roomItem;
         
     /**
      * Create the game and initialise its internal map.
@@ -30,32 +32,96 @@ public class Game
     }
 
     /**
-     * Create all the rooms and link their exits together.
+     * Create all the rooms, populate, and link their exits together.
      */
     private void createRooms()
     {
-        Room outside, theater, pub, lab, office;
-      
+        Item photo, dumbbell, microscope, pocketWatch, soccerBall, football, mask, sandwich, stapler, pencil, wineBottle, emptyBottle, bleach, apple, handBag, chains, bikeLock, whistle, knife, note;
+        
+        // Create the items for the game
+        photo = new Item("a small framed photograph of a lovely couple", 1, "photo");
+        microscope = new Item("a small microscope, battery charged", 5, "microscope");
+        pocketWatch = new Item("a small pocketwatch with a train image on the cover", 3, "pocketwatch");
+        soccerBall = new Item("a size 4 soccerball", 1, "soccer ball");
+        football = new Item("a slightly worn football", 1, "football");
+        mask = new Item("a gilded thespian mask", 1, "thespian mask");
+        sandwich = new Item("an egg salad sandwich, yum...", 0, "sandwich");
+        stapler = new Item("a stapler filled with staples with a small STAPLES logo on it", 2, "stapler");
+        pencil = new Item("a number 2 pencil, pretty much brand new", 0, "pencil");
+        wineBottle = new Item("a fancy and unopened bottle of wine! Quite the score!", 3, "wine bottle");
+        emptyBottle = new Item("an empty bottle. Looks to have once been a wine bottle...shame", 1, "empty bottle");
+        bleach = new Item("a full bottle of bleach, obviously used to help clean intense messes", 4, "bleach");
+        apple = new Item("a clean and shint apple,perfect for keeping doctors away", 0, "apple");
+        handBag = new Item("a purse filled with a wallet, a dead phone, and a 3DS", 5, "purse");
+        chains = new Item("a bundle of heavy chains, clearly designed to restrain someone, or something", 35, "chains");
+        bikeLock = new Item("a bikelock lying on the ground, someone must have left it", 3, "bikelock");
+        whistle = new Item("a referee whistle. Toot Toot", 0, "whistle");
+        knife = new Item("a sharp yet compact butterfly knife. Wonder who left it lying around", 4, "knife");
+        note = new Item("a note with crude handwriting on it. it says: Look in the cellar, see the horror", 0, "note");
+        dumbbell = new Item("a small 45 lbs dumbbell, ready to give you some gains", 45, "dumbbell");
+        
+        Room outside, theater, pub, lab, office, cellar, dungeon, gym, cafeteria, dramaTheater, footballField, soccerField, mainHall, classOneA, storage; 
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        outside = new Room("outside the main entrance of the university", photo);
+        theater = new Room("in a lecture theater", pocketWatch);
+        pub = new Room("in the campus pub", emptyBottle);
+        lab = new Room("in a computing lab", microscope);
+        office = new Room("in the computing admin office", stapler);
+        cellar = new Room("in the cellar", wineBottle);
+        dungeon = new Room("in the dungeon hidden below the cellar", chains);
+        gym = new Room("in the gymnasium of the university", dumbbell);
+        cafeteria = new Room("in the cafeteria of the university", sandwich);
+        dramaTheater = new Room("in a musical theater", mask);
+        footballField = new Room("at the university football field", football);
+        soccerField = new Room("at the university soccer field", soccerBall);
+        mainHall = new Room("in the university's main hallway", pencil);
+        classOneA = new Room("in a history classroom", apple);
+        storage = new Room("inside a janitors storage closet, it is rather big", note);
         
         // initialise room exits
         outside.setExit("east", theater);
-        outside.setExit("south", lab);
+        outside.setExit("south", office);
         outside.setExit("west", pub);
+        outside.setExit("north", footballField);
 
         theater.setExit("west", outside);
+        theater.setExit("south", gym);
 
         pub.setExit("east", outside);
+        pub.setExit("down", cellar);
 
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
+        lab.setExit("east", mainHall);
 
-        office.setExit("west", lab);
+        office.setExit("west", mainHall);
+        office.setExit("north", outside);
+        office.setExit("east", cafeteria);
+        
+        cellar.setExit("up", pub);
+        cellar.setExit("down", dungeon);
+        cellar.setExit("south-up", mainHall);
+        
+        mainHall.setExit("north-down", cellar);
+        mainHall.setExit("east", office);
+        mainHall.setExit("upstairs",dramaTheater);
+        mainHall.setExit("south", classOneA);
+        mainHall.setExit("downstairs", storage);
+        mainHall.setExit("west", lab);
+        
+        footballField.setExit("south", outside);
+        footballField.setExit("east", soccerField);
+        
+        soccerField.setExit("west", footballField);
+        
+        gym.setExit("north", theater);
+        
+        cafeteria.setExit("west", office);
+        
+        dramaTheater.setExit("downstairs", mainHall);
+        
+        classOneA.setExit("north", mainHall);
+        
+        storage.setExit("upstairs", mainHall);
+        
 
         currentRoom = outside;  // start game outside
     }
@@ -118,6 +184,14 @@ public class Game
             case QUIT:
                 wantToQuit = quit(command);
                 break;
+                
+            case LOOK:
+                look();
+                break;
+                
+            case EAT:
+                System.out.println("You have eaten and are now full.");
+                break;
         }
         return wantToQuit;
     }
@@ -178,5 +252,14 @@ public class Game
         else {
             return true;  // signal that we want to quit
         }
+    }
+    
+    /** 
+     * Re-print the current room's information to the player.
+     * List room descriptions and exits.
+     */
+    private void look()
+    {
+       System.out.println(currentRoom.getLongDescription());
     }
 }
