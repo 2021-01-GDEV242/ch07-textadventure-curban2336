@@ -17,7 +17,6 @@ public class Item
     private String description;
     private int weight;
     private String name;
-    private ArrayList<Item> items;        // stores items in every room.
 
     /**
      * Constructor for objects of class Item
@@ -28,7 +27,7 @@ public class Item
         this.description = description;
         this.weight = weight;
         this.name = name;
-        ArrayList items = new ArrayList(20);
+        ArrayList items = new ArrayList<Item>();
     }
 
     /**

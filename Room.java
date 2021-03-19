@@ -1,6 +1,7 @@
 import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
  * Class Room - a room in an adventure game.
@@ -19,7 +20,7 @@ import java.util.Iterator;
 public class Room 
 {
     private String description;
-    private Item roomItem;
+    private ArrayList<Item> items;
     private HashMap<String, Room> exits;        // stores exits of this room.
 
     /**
@@ -28,10 +29,10 @@ public class Room
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description, Item roomItem) 
+    public Room(String description) 
     {
         this.description = description;
-        this.roomItem = roomItem;
+        items = new ArrayList<>();
         exits = new HashMap<>();
     }
 
@@ -43,6 +44,16 @@ public class Room
     public void setExit(String direction, Room neighbor) 
     {
         exits.put(direction, neighbor);
+    }
+    
+    /**
+     * place an item in a room.
+     * @param itemVariable the item being placed.
+     * 
+     */
+    public void addItem(Item itemVariable) 
+    {
+        items.add(itemVariable);
     }
 
     /**
@@ -56,13 +67,24 @@ public class Room
 
     /**
      * Return a description of the room in the form:
-     *     You are in the kitchen.
+     *     You are in the kitchen. Within the area you find a knife.
      *     Exits: north west
      * @return A long description of this room
      */
     public String getLongDescription()
     {
-        return "You are " + description + ". Within the area you find " + roomItem.getDescription() + "\n" + getExitString();
+        String statement = "You are " + description + ". Within the area you find ";
+        int x = 0;
+        while(x < items.size()){
+                statement += items.get(x).getDescription();
+                x++;
+                if(items.size()>x){
+                    statement += ". You also find ";
+                }
+        }
+        statement += "\n" + getExitString();
+        
+        return statement;
     }
 
     /**

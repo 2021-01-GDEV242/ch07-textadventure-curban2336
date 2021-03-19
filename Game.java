@@ -62,21 +62,21 @@ public class Game
         
         Room outside, theater, pub, lab, office, cellar, dungeon, gym, cafeteria, dramaTheater, footballField, soccerField, mainHall, classOneA, storage; 
         // create the rooms
-        outside = new Room("outside the main entrance of the university", photo);
-        theater = new Room("in a lecture theater", pocketWatch);
-        pub = new Room("in the campus pub", emptyBottle);
-        lab = new Room("in a computing lab", microscope);
-        office = new Room("in the computing admin office", stapler);
-        cellar = new Room("in the cellar", wineBottle);
-        dungeon = new Room("in the dungeon hidden below the cellar", chains);
-        gym = new Room("in the gymnasium of the university", dumbbell);
-        cafeteria = new Room("in the cafeteria of the university", sandwich);
-        dramaTheater = new Room("in a musical theater", mask);
-        footballField = new Room("at the university football field", football);
-        soccerField = new Room("at the university soccer field", soccerBall);
-        mainHall = new Room("in the university's main hallway", pencil);
-        classOneA = new Room("in a history classroom", apple);
-        storage = new Room("inside a janitors storage closet, it is rather big", note);
+        outside = new Room("outside the main entrance of the university");
+        theater = new Room("in a lecture theater");
+        pub = new Room("in the campus pub");
+        lab = new Room("in a computing lab");
+        office = new Room("in the computing admin office");
+        cellar = new Room("in the cellar");
+        dungeon = new Room("in the dungeon hidden below the cellar");
+        gym = new Room("in the gymnasium of the university");
+        cafeteria = new Room("in the cafeteria of the university");
+        dramaTheater = new Room("in a musical theater");
+        footballField = new Room("at the university football field");
+        soccerField = new Room("at the university soccer field");
+        mainHall = new Room("in the university's main hallway");
+        classOneA = new Room("in a history classroom");
+        storage = new Room("inside a janitors storage closet, it is rather big");
         
         // initialise room exits
         outside.setExit("east", theater);
@@ -121,6 +121,42 @@ public class Game
         classOneA.setExit("north", mainHall);
         
         storage.setExit("upstairs", mainHall);
+        
+        //place items in the room
+        outside.addItem(photo);
+        outside.addItem(bikeLock);
+        
+        dramaTheater.addItem(mask);
+        
+        pub.addItem(emptyBottle);
+        pub.addItem(pocketWatch);
+        
+        lab.addItem(microscope);
+        
+        office.addItem(stapler);
+        
+        cellar.addItem(wineBottle);
+        cellar.addItem(knife);
+        
+        mainHall.addItem(pencil);
+        
+        footballField.addItem(football);
+        footballField.addItem(whistle);
+        
+        soccerField.addItem(soccerBall);
+        
+        gym.addItem(dumbbell);
+        
+        cafeteria.addItem(sandwich);
+        
+        storage.addItem(bleach);
+        storage.addItem(note);
+        
+        classOneA.addItem(apple);
+        
+        theater.addItem(handBag);
+        
+        dungeon.addItem(chains);
         
 
         currentRoom = outside;  // start game outside
