@@ -16,6 +16,9 @@ public class Player
     // the carrying capacity of the player
     private int carryingCapacity;
     private int currentCapacity = 0;
+    
+    //How many points of health the player has
+    private int health;
 
     /**
      * Constructor for the player
@@ -24,6 +27,7 @@ public class Player
     {
         // initialise the inventory
         inventory = new ArrayList<Item>();
+        health = 30;
         carryingCapacity = 25;
     }
 
@@ -115,6 +119,26 @@ public class Player
     {
         //set the currentRoom as the room entered
         carryingCapacity += 10;
+    }
+    
+    /**
+     * 
+     * method to return the health of the player.
+     * 
+     */
+    public int getHealth()
+    {
+        return health;
+    }
+    
+    /**
+     * 
+     * method to return the modified health of the player.
+     * 
+     */
+    public int changeHealth(int modifier)
+    {
+        return health+=modifier;
     }
     
     /**

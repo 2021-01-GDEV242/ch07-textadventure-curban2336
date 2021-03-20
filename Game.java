@@ -242,6 +242,10 @@ public class Game
             case ITEMS:
                 System.out.println(playerOne.getItemString());
                 break;
+                
+            case HEALTH:
+                System.out.println("Your current health is: " + playerOne.getHealth() + " hitpoints");
+                break;
         }
         return wantToQuit;
     }
@@ -341,16 +345,19 @@ public class Game
                         playerOne.cookieBoost();
                         System.out.println("You have eaten the magic cookie and can now hold more!");
                         playerOne.despose(playerOne.getItem("cookie"));
+                        playerOne.changeHealth(10);
                     }
                 }
                 else{
                     if (playerOne.getItem("apple") != null){
                         System.out.println("You have eaten the apple.");
                         playerOne.despose(playerOne.getItem("apple"));
+                        playerOne.changeHealth(1);
                     }
                     else if (playerOne.getItem("wine bottle") != null){
                         System.out.println("You drank the wine.");
                         playerOne.despose(playerOne.getItem("wine bottle"));
+                        playerOne.changeHealth(-3);
                     }
                     else if (playerOne.getItem("cookie") != null){
                         System.out.println("You put it away, the time doesn't feel right.");
