@@ -21,7 +21,17 @@ public class Game
     private Parser parser;
     private Player playerOne;
     private Room roomWhereMagicCookieWorks;
+    private static Game begin;
         
+    /**
+     * Creates a Game instance.
+     */
+    public static void main(String[] args)
+    {
+        begin = new Game();
+        begin.play();
+    }
+    
     /**
      * Create the game and initialise its internal map.
      */
