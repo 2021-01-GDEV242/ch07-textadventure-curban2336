@@ -13,13 +13,13 @@
  *  executes the commands that the parser returns.
  * 
  * @author  Michael Kölling and David J. Barnes. Modified by Christopher Urban
- * @version 2021.03.18
+ * @version 2021.03.19
  */
 
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
+    private Player playerOne;
     private Item roomItem;
         
     /**
@@ -27,6 +27,7 @@ public class Game
      */
     public Game() 
     {
+        playerOne = new Player();
         createRooms();
         parser = new Parser();
     }
@@ -36,7 +37,7 @@ public class Game
      */
     private void createRooms()
     {
-        Item photo, dumbbell, microscope, pocketWatch, soccerBall, football, mask, sandwich, stapler, pencil, wineBottle, emptyBottle, bleach, apple, handBag, chains, bikeLock, whistle, knife, note;
+        Item photo, dumbbell, microscope, pocketWatch, soccerBall, football, mask, cookie, stapler, pencil, wineBottle, emptyBottle, bleach, apple, handBag, chains, bikeLock, whistle, knife, note;
         
         // Create the items for the game
         photo = new Item("a small framed photograph of a lovely couple", 1, "photo");
@@ -45,7 +46,7 @@ public class Game
         soccerBall = new Item("a size 4 soccerball", 1, "soccer ball");
         football = new Item("a slightly worn football", 1, "football");
         mask = new Item("a gilded thespian mask", 1, "thespian mask");
-        sandwich = new Item("an egg salad sandwich, yum...", 0, "sandwich");
+        cookie = new Item("a magical cookie, seems delicious", 0, "cookie");
         stapler = new Item("a stapler filled with staples with a small STAPLES logo on it", 2, "stapler");
         pencil = new Item("a number 2 pencil, pretty much brand new", 0, "pencil");
         wineBottle = new Item("a fancy and unopened bottle of wine! Quite the score!", 3, "wine bottle");
@@ -159,7 +160,7 @@ public class Game
         dungeon.addItem(chains);
         
 
-        currentRoom = outside;  // start game outside
+        playerOne.setRoom(outside);  // start game outside
     }
 
     /**
@@ -190,7 +191,7 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(playerOne.getCurrentRoom().getLongDescription());
     }
 
     /**
@@ -228,6 +229,18 @@ public class Game
             case EAT:
                 System.out.println("You have eaten and are now full.");
                 break;
+                
+            case TAKE:
+                takeItem(command);
+                break;
+                
+            case DROP:
+                dropItem(command);
+                break;
+                
+            case ITEMS:
+                System.out.println(playerOne.getItemString());
+                break;
         }
         return wantToQuit;
     }
@@ -263,14 +276,68 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
+        Room nextRoom = playerOne.getCurrentRoom().getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
+            playerOne.setRoom(nextRoom);
+            System.out.println(playerOne.getCurrentRoom().getLongDescription());
+        }
+    }
+    
+    /** 
+     * take a specified item from the current room. If the item is there, collect the item
+     * otherwise print an error message.
+     */
+    private void takeItem(Command command) 
+    {
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            System.out.println("Take what?");
+            return;
+        }
+
+        String name = command.getSecondWord();
+
+        // Try to take the room's item.
+        Item itemToTake = playerOne.getCurrentRoom().getItem(name);
+
+        if (itemToTake == null) {
+            System.out.println("There is no item!");
+        }
+        else {
+            playerOne.collect(itemToTake);
+            playerOne.getCurrentRoom().removeItem(itemToTake);
+            System.out.println("You now have a " + itemToTake.getName() + ". Weight: " + itemToTake.getWeight() + " lbs");
+        }
+    }
+    
+    /** 
+     * 
+     * drop a specified item in the current room. Remove item from player inventory
+     */
+    private void dropItem(Command command) 
+    {
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            System.out.println("Drop what?");
+            return;
+        }
+
+        String name = command.getSecondWord();
+
+        // Try to take the room's item.
+        Item itemToDrop = playerOne.getItem(name);
+
+        if (itemToDrop == null) {
+            System.out.println("There is no item!");
+        }
+        else {
+            playerOne.despose(itemToDrop);
+            playerOne.getCurrentRoom().addItem(itemToDrop);
+            System.out.println("You have dropped the" + itemToDrop.getName());
         }
     }
 
@@ -292,10 +359,10 @@ public class Game
     
     /** 
      * Re-print the current room's information to the player.
-     * List room descriptions and exits.
+     * List room descriptions, exits, and items.
      */
     private void look()
     {
-       System.out.println(currentRoom.getLongDescription());
+       System.out.println(playerOne.getCurrentRoom().getLongDescription());
     }
 }

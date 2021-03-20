@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * rooms. Items have a description and weight to them. 
  *
  * @author Christopher Urban
- * @version 2021.03.18
+ * @version 2021.03.19
  */
 public class Item
 {
@@ -27,7 +27,7 @@ public class Item
         this.description = description;
         this.weight = weight;
         this.name = name;
-        ArrayList items = new ArrayList<Item>();
+        ArrayList items = new ArrayList<>();
     }
 
     /**

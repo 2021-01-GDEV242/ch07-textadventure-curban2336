@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * stores a reference to the neighboring room.
  * 
  * @author  Michael Kölling and David J. Barnes. Modified by Christopher Urban
- * @version 2021.03.18
+ * @version 2021.03.19
  */
 
 public class Room 
@@ -54,6 +54,32 @@ public class Room
     public void addItem(Item itemVariable) 
     {
         items.add(itemVariable);
+    }
+    
+    /**
+     * remove an item from a room.
+     * @param itemVariable the item being taken.
+     * 
+     */
+    public void removeItem(Item itemVariable) 
+    {
+        items.remove(itemVariable);
+    }
+    
+    /**
+     * take an item from a room.
+     * @param itemVariable the item being placed.
+     * 
+     */
+    public Item getItem(String itemVariable) 
+    {
+        Item filler = null;
+        for(Item item : items){
+            if(item.getName().equals(itemVariable)){
+                filler = item;
+            }
+        }
+        return filler;
     }
 
     /**
