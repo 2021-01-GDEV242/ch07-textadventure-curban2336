@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 /**
- * Object created at the start of the game to establish the players inventory
+ * Object created at the start of the game to establish the players inventory,
+ * location, health, and beamer equipment
  *
  * @author Christopher Urban
  * @version 2021.03.19
