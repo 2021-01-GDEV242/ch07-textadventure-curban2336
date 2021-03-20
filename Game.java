@@ -20,7 +20,7 @@ public class Game
 {
     private Parser parser;
     private Player playerOne;
-    private Item roomItem;
+    private Room roomWhereMagicCookieWorks;
         
     /**
      * Create the game and initialise its internal map.
@@ -148,7 +148,7 @@ public class Game
         
         gym.addItem(dumbbell);
         
-        cafeteria.addItem(sandwich);
+        cafeteria.addItem(cookie);
         
         storage.addItem(bleach);
         storage.addItem(note);
@@ -160,6 +160,7 @@ public class Game
         dungeon.addItem(chains);
         
 
+        roomWhereMagicCookieWorks = cafeteria;
         playerOne.setRoom(outside);  // start game outside
     }
 
@@ -226,8 +227,8 @@ public class Game
                 look();
                 break;
                 
-            case EAT:
-                System.out.println("You have eaten and are now full.");
+            case CONSUME:
+                consumeItem(command);
                 break;
                 
             case TAKE:
@@ -311,6 +312,53 @@ public class Game
             playerOne.collect(itemToTake);
             playerOne.getCurrentRoom().removeItem(itemToTake);
             System.out.println("You now have a " + itemToTake.getName() + ". Weight: " + itemToTake.getWeight() + " lbs");
+        }
+    }
+    
+    /** 
+     * take a specified item from the current room. If the item is there, collect the item
+     * otherwise print an error message.
+     */
+    private void consumeItem(Command command) 
+    {
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            System.out.println("consume what?");
+            return;
+        }
+
+        String name = command.getSecondWord();
+
+        // Try to take the room's item.
+        Item itemToConsume = playerOne.getItem(name);
+
+        if (itemToConsume == null) {
+            System.out.println("There is no food or drink!");
+        }
+        else {
+            if (playerOne.getCurrentRoom() == roomWhereMagicCookieWorks){
+                    if (playerOne.getItem("cookie") != null){
+                        playerOne.cookieBoost();
+                        System.out.println("You have eaten the magic cookie and can now hold more!");
+                        playerOne.despose(playerOne.getItem("cookie"));
+                    }
+                }
+                else{
+                    if (playerOne.getItem("apple") != null){
+                        System.out.println("You have eaten the apple.");
+                        playerOne.despose(playerOne.getItem("apple"));
+                    }
+                    else if (playerOne.getItem("wine bottle") != null){
+                        System.out.println("You drank the wine.");
+                        playerOne.despose(playerOne.getItem("wine bottle"));
+                    }
+                    else if (playerOne.getItem("cookie") != null){
+                        System.out.println("You put it away, the time doesn't feel right.");
+                    }
+                    else{
+                        System.out.println("You cannot eat this!");
+                    }
+                }
         }
     }
     

@@ -107,6 +107,18 @@ public class Player
     
     /**
      * 
+     * 
+     *method to raise the amount of weight the player can carry by 10 pounds
+     * 
+     */
+    public void cookieBoost()
+    {
+        //set the currentRoom as the room entered
+        carryingCapacity += 10;
+    }
+    
+    /**
+     * 
      * method to return the location of the player.
      * 
      */
