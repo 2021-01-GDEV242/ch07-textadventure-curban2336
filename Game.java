@@ -69,7 +69,7 @@ public class Game
         lab = new Room("in a computing lab");
         office = new Room("in the computing admin office");
         cellar = new Room("in the cellar");
-        dungeon = new Room("in the dungeon hidden below the cellar");
+        dungeon = new Room("in the dungeon hidden below the cellar. As you enter the door is locked behind you. You realize you have been trapped. There are no exits. You must restart");
         gym = new Room("in the gymnasium of the university");
         cafeteria = new Room("in the cafeteria of the university");
         dramaTheater = new Room("in a musical theater");
