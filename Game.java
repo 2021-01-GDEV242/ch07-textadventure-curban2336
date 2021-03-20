@@ -246,6 +246,16 @@ public class Game
             case HEALTH:
                 System.out.println("Your current health is: " + playerOne.getHealth() + " hitpoints");
                 break;
+                
+            case DOWNLOAD:
+                playerOne.charge(playerOne.getCurrentRoom());
+                System.out.println("You have downloaded the current areas information into your beamer. When activated it will transport you back here");
+                break;
+                
+            case ACTIVATE:
+                playerOne.fire();
+                look();
+                break;
         }
         return wantToQuit;
     }

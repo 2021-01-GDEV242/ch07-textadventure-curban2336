@@ -13,6 +13,9 @@ public class Player
     // the location of the player
     private Room currentRoom;
     
+    // the beamer storage
+    private Room beamer;
+    
     // the carrying capacity of the player
     private int carryingCapacity;
     private int currentCapacity = 0;
@@ -139,6 +142,32 @@ public class Player
     public int changeHealth(int modifier)
     {
         return health+=modifier;
+    }
+    
+    /**
+     * method to download the current rooms information to the beamer
+     * 
+     *
+     * @param  room the room that beamer will identify as
+     * 
+     */
+    public void charge(Room room)
+    {
+        //set the beamer as the room entered
+        beamer = room;
+    }
+    
+    /**
+     * method to transport the player to the room downloaded by the beamer
+     * 
+     *
+     * @param  room the room that beamer will transport the player
+     * 
+     */
+    public void fire()
+    {
+        //set the currentRoom as the room downloaded by the beamer
+        currentRoom = beamer;
     }
     
     /**
