@@ -1,6 +1,7 @@
 import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
  * Class Room - a room in an adventure game.
@@ -12,13 +13,14 @@ import java.util.Iterator;
  * connected to other rooms via exits.  For each existing exit, the room 
  * stores a reference to the neighboring room.
  * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author  Michael Kölling and David J. Barnes. Modified by Christopher Urban
+ * @version 2021.03.19
  */
 
 public class Room 
 {
     private String description;
+    private ArrayList<Item> items;
     private HashMap<String, Room> exits;        // stores exits of this room.
 
     /**
@@ -30,6 +32,7 @@ public class Room
     public Room(String description) 
     {
         this.description = description;
+        items = new ArrayList<>();
         exits = new HashMap<>();
     }
 
@@ -41,6 +44,42 @@ public class Room
     public void setExit(String direction, Room neighbor) 
     {
         exits.put(direction, neighbor);
+    }
+    
+    /**
+     * place an item in a room.
+     * @param itemVariable the item being placed.
+     * 
+     */
+    public void addItem(Item itemVariable) 
+    {
+        items.add(itemVariable);
+    }
+    
+    /**
+     * remove an item from a room.
+     * @param itemVariable the item being taken.
+     * 
+     */
+    public void removeItem(Item itemVariable) 
+    {
+        items.remove(itemVariable);
+    }
+    
+    /**
+     * take an item from a room.
+     * @param itemVariable the item being placed.
+     * 
+     */
+    public Item getItem(String itemVariable) 
+    {
+        Item filler = null;
+        for(Item item : items){
+            if(item.getName().equals(itemVariable)){
+                filler = item;
+            }
+        }
+        return filler;
     }
 
     /**
@@ -54,13 +93,24 @@ public class Room
 
     /**
      * Return a description of the room in the form:
-     *     You are in the kitchen.
+     *     You are in the kitchen. Within the area you find a knife.
      *     Exits: north west
      * @return A long description of this room
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString();
+        String statement = "You are " + description + ". Within the area you find ";
+        int x = 0;
+        while(x < items.size()){
+                statement += items.get(x).getDescription();
+                x++;
+                if(items.size()>x){
+                    statement += ". You also find ";
+                }
+        }
+        statement += "\n" + getExitString();
+        
+        return statement;
     }
 
     /**
